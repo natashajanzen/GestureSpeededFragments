@@ -1,9 +1,10 @@
 # Project-specific ignores:
 
 # Data files written when testing the experiment.
-data/*
+data/*.psydat
+data/*.csv
 
-# Because I occasionally accidentally open RStudio
+# Because I occasionally accidentally open RStudio.
 .Rhistory
 
 
