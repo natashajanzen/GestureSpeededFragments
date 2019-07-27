@@ -18,16 +18,22 @@ from psychopy import visual, core, data, event, tools
 # Files.
 file_encoding = 'utf-8'
 trials_filename = 'mainTrials.xlsx'
+example_video = 'baby_PL_copy.mp4'
 
 # Timing.
 short_wait = 0.25
 feedback_duration = 1.0
+video_end_pause = 0.5
 
 # Colors.
 colors = {'background': (0, 0, 0),
           'text': (1, 1, 1),
           'correct': (-1, 1, -1),
           'incorrect': (1, -1, -1)}
+
+# Window size.
+# (Needs to be at least as large as the videos to avoid cropping them.)
+window_size = (1280, 720)
 
 
 #%% Functions
@@ -61,14 +67,14 @@ subject_id = input('Subject ID: ')
 # Allocate a file name for the subject.
 subject_filename = os.path.join('data', subject_id)
 
-# Either get trials for existing subject, or create new ones.
+# Either get trials for an existing subject, or create new ones.
 try:
     trials = tools.filetools.fromFile(subject_filename + '.psydat')
 except FileNotFoundError:
-    trials = data.TrialHandler(data.importConditions(trials_filename),
-                               nReps=1,
-                               method='random',
-                               extraInfo={'subject': subject_id})
+    trials = data.TrialHandler2(data.importConditions(trials_filename),
+                                nReps=1,
+                                method='random',
+                                extraInfo={'subject': subject_id})
 
 
 #%% Psychopy setup
@@ -81,10 +87,15 @@ quit_key = 'q'
 timer = core.Clock()
 
 # Window.
-win = visual.Window(color=colors['background'])
+win = visual.Window(size=window_size, color=colors['background'])
+visual.TextStim(win, text='loading...', color=colors['text']).draw()
+win.flip()
 
-# Stimuli.
+# Text stimulus.
 fragment = visual.TextStim(win)
+
+# Video stimulus.
+video = visual.MovieStim3(win, example_video)
 
 
 #%% Intro
@@ -100,6 +111,13 @@ instructions('intro.txt')
 for t in trials:
     
     # Play the gesture video.
+    video.loadMovie(t['gestures'])
+    video.play()
+    while video.status != visual.FINISHED:
+        video.draw()
+        win.flip()
+        core.wait(0.001)
+    core.wait(video_end_pause)
     
     # Show the fragment.
     fragment.color = colors['text']
@@ -150,8 +168,12 @@ win.close()
 
 #%% Save and summarize
 
+# Save trials whether the session was completed or not.
+# These can be reloaded later to finish the session.
 trials.saveAsPickle(subject_filename, fileCollisionMethod='overwrite')
 
+# If the session was completed all the way to the end,
+# save all the data as a spreadsheet and print some summaries.
 if trials.finished:
     
     # Save.
