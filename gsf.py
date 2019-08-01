@@ -87,7 +87,7 @@ except FileNotFoundError:
     
     # Shuffle and sort by condition.
     random.shuffle(trial_types)
-    trial_types.sort(key=lambda x: x['condition'], reverse=order=='s')
+    trial_types.sort(key=lambda x: x['condition'], reverse=order == 's')
     trials = data.TrialHandler(trial_types,
                                nReps=1,
                                method='sequential',
