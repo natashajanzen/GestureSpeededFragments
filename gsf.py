@@ -6,6 +6,7 @@ GestureSpeededFragments experiment.
 
 import glob
 import os
+import random
 import webbrowser
 
 import numpy
@@ -16,9 +17,9 @@ from psychopy import visual, core, data, event, tools
 #%% Parameters
 
 # Files.
-file_encoding = 'utf-8'
-trials_filename = 'mainTrials.xlsx'
 example_video = 'baby_PL_copy.mp4'
+trials_filename = 'mainTrials.xlsx'
+test_trials_filename = 'mainTrials_test.xlsx'
 
 # Timing.
 short_wait = 0.25
@@ -43,7 +44,7 @@ def instructions(filename):
     Display an onscreen message from a text file.
     """
     filename = os.path.join('text', filename)
-    msg = open(filename, encoding=file_encoding).read()
+    msg = open(filename, encoding='utf-8').read()
     text = visual.TextStim(win, text=msg,
                            color=colors['text'],
                            wrapWidth=1.95)
@@ -54,26 +55,42 @@ def instructions(filename):
     core.wait(short_wait)
 
 
-#%% Trial data
+#%% Data files
 
-# Print a list of subject ids already used.
+# Experimenter input: subject ID.
 existing_files = glob.glob(os.path.join('data', '*.psydat'))
 existing_ids = [x.split(os.path.sep)[-1].split('.')[0] for x in existing_files]
 print('Subject IDs already in use: {}'.format(existing_ids))
-
-# Experimenter input at the console.
 subject_id = input('Subject ID: ')
 
 # Allocate a file name for the subject.
 subject_filename = os.path.join('data', subject_id)
 
-# Either get trials for an existing subject, or create new ones.
+# Get trials for an existing subject.
 try:
     trials = tools.filetools.fromFile(subject_filename + '.psydat')
 except FileNotFoundError:
-    trials = data.TrialHandler(data.importConditions(trials_filename),
+    
+    # Decide on test mode.
+    test_mode = input('Test mode? (y/n): ').strip().lower()
+    if test_mode not in 'yn':
+        raise ValueError("Answer must be one of 'y' or 'n'.")
+    if test_mode == 'y':
+        trial_types = data.importConditions(test_trials_filename)
+    else:
+        trial_types = data.importConditions(trials_filename)
+    
+    # Get the desired order of conditions.
+    order = input('Order (S or G): ').strip().lower()
+    if order not in 'sg':
+        raise ValueError("Order must be one of 'S' or 'G'.")
+    
+    # Shuffle and sort by condition.
+    random.shuffle(trial_types)
+    trial_types.sort(key=lambda x: x['condition'], reverse=order=='s')
+    trials = data.TrialHandler(trial_types,
                                nReps=1,
-                               method='random',
+                               method='sequential',
                                extraInfo={'subject': subject_id})
 
 
@@ -158,6 +175,11 @@ for t in trials:
     # Pause between trials.
     win.flip()
     core.wait(short_wait)
+    
+    # Break between blocks.
+    next_trial = trials.getFutureTrial(1)
+    if next_trial and (t['condition'] != next_trial['condition']):
+        break
 
 
 #%% End
@@ -179,7 +201,7 @@ if trials.finished:
     # Save.
     results_filename = os.path.join('data', subject_id + '.csv')
     results = trials.saveAsWideText(results_filename,
-                                    encoding=file_encoding)
+                                    encoding='utf-8')
     
     # Summaries.
     summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
