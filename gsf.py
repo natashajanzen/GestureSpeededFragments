@@ -71,10 +71,10 @@ subject_filename = os.path.join('data', subject_id)
 try:
     trials = tools.filetools.fromFile(subject_filename + '.psydat')
 except FileNotFoundError:
-    trials = data.TrialHandler2(data.importConditions(trials_filename),
-                                nReps=1,
-                                method='random',
-                                extraInfo={'subject': subject_id})
+    trials = data.TrialHandler(data.importConditions(trials_filename),
+                               nReps=1,
+                               method='random',
+                               extraInfo={'subject': subject_id})
 
 
 #%% Psychopy setup
