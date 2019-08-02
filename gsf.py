@@ -213,7 +213,7 @@ if trials.finished:
                                        normalize='index')
     try:
         summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean, statistics.stdev]})
-    except:
+    except statistics.StatisticsError:
         summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean]})
     msg = '\n#### Summary ####\n\n{}\n\n{}\n\n#################\n'
     print(msg.format(summary_accuracy, summary_rt))
