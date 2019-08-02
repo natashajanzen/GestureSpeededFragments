@@ -64,12 +64,12 @@ print('Subject IDs already in use: {}'.format(existing_ids))
 subject_id = input('Subject ID: ')
 
 # Allocate a file name for the subject.
-subject_filename = os.path.join('data', subject_id)
+subject_filename = os.path.join('data', subject_id + '.psydat')
 
-# Get trials for an existing subject.
-try:
-    trials = tools.filetools.fromFile(subject_filename + '.psydat')
-except FileNotFoundError:
+# Get trials for an existing subject (or generate new ones).
+if os.path.exists(subject_filename):
+    trials = tools.filetools.fromFile(subject_filename)
+else:
     
     # Decide on test mode.
     test_mode = input('Test mode? (y/n): ').strip().lower()
