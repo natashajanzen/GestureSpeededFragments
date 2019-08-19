@@ -2,7 +2,7 @@
 library(tidyverse)
 library(plyr) ## without this ldply LOC 11 won't work
 library(readr)
-setwd("~/Documents/PhD/SpeededFragment/GestureSpeededFragments-lt")
+setwd("~/Documents/PhD/SpeededFragment/GestureSpeededFragments-development")
 mydir = "data"
 myfiles = list.files(path=mydir, pattern="*.csv", full.names=TRUE)
 myfiles
