@@ -26,6 +26,3 @@ Miscellaneous additional files.
 
 [text](text)  
 Text files of onscreen instructions.
-
-[getPsychoPyCollectedData.R] 
-R script to collect the individual results and save one dataframe named collectedData.csv.
