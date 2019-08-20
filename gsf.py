@@ -8,9 +8,9 @@ import glob
 import os
 import random
 import statistics
-import webbrowser
 
 import pandas
+import plotnine
 from psychopy import visual, core, data, event, tools
 
 
@@ -44,8 +44,8 @@ def instructions(filename):
     Display an onscreen message from a text file.
     """
     filename = os.path.join('text', filename)
-    msg = open(filename, encoding='utf-8').read()
-    text = visual.TextStim(win, text=msg,
+    text = visual.TextStim(win,
+                           text=open(filename, encoding='utf-8').read(),
                            color=colors['text'],
                            wrapWidth=1.95)
     text.draw()
@@ -90,7 +90,7 @@ else:
     
     # Shuffle and sort by condition.
     random.shuffle(trial_types)
-    trial_types.sort(key = lambda x: x['condition'], reverse = order == 's')
+    trial_types.sort(key=lambda x: x['condition'], reverse=order == 's')
     trials = data.TrialHandler(trial_types,
                                nReps=1,
                                method='sequential',
@@ -198,7 +198,7 @@ win.close()
 trials.saveAsPickle(subject_filename, fileCollisionMethod='overwrite')
 
 # If the session was completed all the way to the end,
-# save all the data as a spreadsheet and print some summaries.
+# save all the data as a spreadsheet and show some summaries.
 if trials.finished:
     
     # Save.
@@ -207,7 +207,14 @@ if trials.finished:
                                     fileCollisionMethod='overwrite',
                                     encoding='utf-8')
     
-    # Summaries.
+    # Plot.
+    fig = (plotnine.ggplot(plotnine.aes(x='RT', color='correct', fill='correct'), results) +
+           plotnine.geom_histogram(alpha=0.5, position=plotnine.position_identity()) +
+           plotnine.facet_wrap('condition', nrow=2, labeller='label_both') +
+           plotnine.labs(x='RT (s)'))
+    fig.draw()
+    
+    # Summarize.
     summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
                                        dropna=False,
                                        normalize='index')
@@ -217,6 +224,3 @@ if trials.finished:
         summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean]})
     msg = '\n#### Summary ####\n\n{}\n\n{}\n\n#################\n'
     print(msg.format(summary_accuracy, summary_rt))
-    
-    # Try to open spreadsheet.
-    webbrowser.open(results_filename)
