@@ -9,6 +9,7 @@ import os
 import random
 import statistics
 
+from matplotlib import pyplot
 import pandas
 import plotnine
 from psychopy import visual, core, data, event, tools
@@ -213,6 +214,7 @@ if trials.finished:
            plotnine.facet_wrap('condition', nrow=2, labeller='label_both') +
            plotnine.labs(x='RT (s)'))
     fig.draw()
+    pyplot.show()
     
     # Summarize.
     summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
