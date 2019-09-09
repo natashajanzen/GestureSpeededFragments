@@ -13,7 +13,7 @@ Spreadsheet of trial types.
 Abbreviated spreadsheet of trial types. For quick test runs.
 
 [requirements.txt](requirements.txt)  
-List of Python package versions used when developing the experiment. As produced by `pip freeze`. In particular note that Psychopy currently requires an older version of pyglet (1.3) than the latest (1.4), as per [this issue](https://github.com/psychopy/psychopy/issues/2518). You can force install the older version with `pip install 'pyglet<1.4' --force-reinstall`.
+List of Python package versions used when developing the experiment. As produced by `pip freeze`. Use `pip install -r requirements.txt` to install all dependencies, for example in a new Python virtual environment. In particular note that Psychopy currently requires an older version of pyglet (1.3) than the latest (1.4), as per [this issue](https://github.com/psychopy/psychopy/issues/2518). You can force install the older version with `pip install 'pyglet<1.4' --force-reinstall`.
 
 [data](data)  
 Data collected in the experiment is saved here. *.psydat* files store Psychopy TrialHandler objects. These are saved even if the subject does not complete the experiment. *.csv* files store results from completed runs of the experiment.
@@ -26,3 +26,6 @@ Miscellaneous additional files.
 
 [text](text)  
 Text files of onscreen instructions.
+
+[getPsychoPyCollectedData.R](getPsychoPyCollectedData.R)  
+R script to collect the individual results and save one dataframe named collectedData.csv.

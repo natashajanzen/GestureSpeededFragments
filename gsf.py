@@ -7,10 +7,11 @@ GestureSpeededFragments experiment.
 import glob
 import os
 import random
-import webbrowser
+import statistics
 
-import numpy
+from matplotlib import pyplot
 import pandas
+import plotnine
 from psychopy import visual, core, data, event, tools
 
 
@@ -21,10 +22,9 @@ example_video = 'baby_PL_copy.mp4'
 trials_filename = 'mainTrials.xlsx'
 test_trials_filename = 'mainTrials_test.xlsx'
 
-# Timing.
-short_wait = 0.25
-feedback_duration = 1.0
-video_end_pause = 0.5
+# Window size.
+# (Needs to be at least as large as the videos to avoid cropping them.)
+window_size = (1280, 720)
 
 # Colors.
 colors = {'background': (0, 0, 0),
@@ -32,9 +32,10 @@ colors = {'background': (0, 0, 0),
           'correct': (-1, 1, -1),
           'incorrect': (1, -1, -1)}
 
-# Window size.
-# (Needs to be at least as large as the videos to avoid cropping them.)
-window_size = (1280, 720)
+# Timing.
+short_wait = 0.25
+feedback_duration = 1.0
+video_end_pause = 0.5
 
 
 #%% Functions
@@ -44,8 +45,8 @@ def instructions(filename):
     Display an onscreen message from a text file.
     """
     filename = os.path.join('text', filename)
-    msg = open(filename, encoding='utf-8').read()
-    text = visual.TextStim(win, text=msg,
+    text = visual.TextStim(win,
+                           text=open(filename, encoding='utf-8').read(),
                            color=colors['text'],
                            wrapWidth=1.95)
     text.draw()
@@ -55,25 +56,28 @@ def instructions(filename):
     core.wait(short_wait)
 
 
-#%% Data files
+#%% Data setup
 
-# Experimenter input: subject ID.
+# Get subject ID.
 existing_files = glob.glob(os.path.join('data', '*.psydat'))
 existing_ids = [x.split(os.path.sep)[-1].split('.')[0] for x in existing_files]
 print('Subject IDs already in use: {}'.format(existing_ids))
-subject_id = input('Subject ID: ')
+subject_id = input('Subject ID: ').strip()
 
 # Allocate a file name for the subject.
-subject_filename = os.path.join('data', subject_id)
+subject_filename = os.path.join('data', subject_id + '.psydat')
 
-# Get trials for an existing subject.
-try:
-    trials = tools.filetools.fromFile(subject_filename + '.psydat')
-except FileNotFoundError:
+# Get trials for an existing subject (or generate new ones).
+if os.path.exists(subject_filename):
+    trials = tools.filetools.fromFile(subject_filename)
+    if trials.finished:
+        msg = "Subject '{}' has already completed the study."
+        raise ValueError(msg.format(subject_id))
+else:
     
     # Decide on test mode.
-    test_mode = input('Test mode? (y/n): ').strip().lower()
-    if test_mode not in 'yn':
+    test_mode = input('Test mode? (y/n): ').strip().lower()[:1]
+    if test_mode not in ['y', 'n']:
         raise ValueError("Answer must be one of 'y' or 'n'.")
     if test_mode == 'y':
         trial_types = data.importConditions(test_trials_filename)
@@ -82,7 +86,7 @@ except FileNotFoundError:
     
     # Get the desired order of conditions.
     order = input('Order (S or G): ').strip().lower()
-    if order not in 'sg':
+    if order not in ['s', 'g']:
         raise ValueError("Order must be one of 'S' or 'G'.")
     
     # Shuffle and sort by condition.
@@ -195,20 +199,30 @@ win.close()
 trials.saveAsPickle(subject_filename, fileCollisionMethod='overwrite')
 
 # If the session was completed all the way to the end,
-# save all the data as a spreadsheet and print some summaries.
+# save all the data as a spreadsheet and show some summaries.
 if trials.finished:
     
     # Save.
     results_filename = os.path.join('data', subject_id + '.csv')
     results = trials.saveAsWideText(results_filename,
+                                    fileCollisionMethod='overwrite',
                                     encoding='utf-8')
     
-    # Summaries.
-    summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
-                                       normalize=True)
-    print(summary_accuracy)
-    summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [numpy.mean, numpy.std]})
-    print(summary_rt)
+    # Plot.
+    fig = (plotnine.ggplot(plotnine.aes(x='RT', color='correct', fill='correct'), results) +
+           plotnine.geom_histogram(alpha=0.5, position=plotnine.position_identity()) +
+           plotnine.facet_wrap('condition', nrow=2, labeller='label_both') +
+           plotnine.labs(x='RT (s)'))
+    fig.draw()
+    pyplot.show()
     
-    # Open spreadsheet.
-    webbrowser.open(results_filename)
+    # Summarize.
+    summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
+                                       dropna=False,
+                                       normalize='index')
+    try:
+        summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean, statistics.stdev]})
+    except statistics.StatisticsError:
+        summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean]})
+    msg = '\n#### Summary ####\n\n{}\n\n{}\n\n#################\n'
+    print(msg.format(summary_accuracy, summary_rt))
