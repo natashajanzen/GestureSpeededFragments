@@ -3,9 +3,6 @@
 [**gsf.py**](gsf.py)  
 A Python script to run the experiment. Uses Psychopy. This is the file to run in order to start the experiment.
 
-[baby_PL_copy.mp4](baby_PL_copy.mp4)  
-Example gesture video. Also used in the experiment as a 'dummy' first loaded video.
-
 [mainTrials.xlsx](mainTrials.xlsx)  
 Spreadsheet of trial types.
 
