@@ -35,7 +35,7 @@ colors = {'background': (0, 0, 0),
 # Timing.
 between_trials_pause = 0.25
 feedback_duration = 1.0
-video_start_pause = 0.5
+video_start_pause = 0.25
 video_end_pause = 0.5
 
 
