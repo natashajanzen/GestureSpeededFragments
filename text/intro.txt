@@ -1,12 +1,14 @@
 Hello!
 
-You will hear two words followed by a word missing a letter. You decide which missing letter completes the word.
+You will hear two words followed by a word missing a letter. 
+You decide which missing letter completes the word.
 
 Example:
 
 the cats j_mp
 the cats jump
 
-Try to respond as quickly and as accurately as possible. To make things easier the answer will always be: a, e, i, o or u.
+Try to respond as quickly and as accurately as possible. 
+To make things easier the answer will always be: a, e, i, o or u.
 
 When you are ready press any key to start.
