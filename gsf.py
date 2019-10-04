@@ -23,8 +23,12 @@ trials_filename = 'mainTrials.xlsx'
 test_trials_filename = 'mainTrials_test.xlsx'
 
 # Window size.
-# (Needs to be at least as large as the videos to avoid cropping them.)
-window_size = (1920, 1080)
+# If this is larger than the resolution of the monitor,
+# the Psychopy window will not fit on the screen.
+# If this is smaller than the resolution of the videos,
+# the window will 'zoom in' on the center of the video.
+# (The videos are currently (1920, 1080).)
+window_size = (1280, 720)
 
 # Colors.
 colors = {'background': (0, 0, 0),
