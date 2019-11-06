@@ -29,4 +29,8 @@ myData
 # x <- factor(1:3)
 # levels(x) <- as.numeric(levels(x))+40
 
+## Create age from subject variable
+myData$age <- sub('.', '', myData$subject)
+myData$age <- as.integer(myData$age)
+
 write.csv(myData, file="collectedData.csv",row.names = T)
