@@ -9,7 +9,7 @@ Spreadsheet of trial types.
 [mainTrials_test.xlsx](mainTrials_test.xlsx)  
 Abbreviated spreadsheet of trial types. For quick test runs.
 
-[plots.py](plots.py)
+[plots.py](plots.py)  
 A script to make some quick plots of the results, using [plotnine](https://plotnine.readthedocs.io/en/stable/).
 
 [requirements.txt](requirements.txt)  
