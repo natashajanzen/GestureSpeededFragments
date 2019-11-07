@@ -81,7 +81,7 @@ if os.path.exists(subject_filename):
 
 # Otherwise generate new trials.
 else:
-    
+
     # Decide on test mode.
     test_mode = input('Test mode? (y/n): ').strip().lower()[:1]
     if test_mode not in ['y', 'n']:
@@ -90,12 +90,12 @@ else:
         trial_types = data.importConditions(test_trials_filename)
     else:
         trial_types = data.importConditions(trials_filename)
-    
+
     # Get the desired order of conditions.
     order = input('Order (S or G): ').strip().lower()
     if order not in ['s', 'g']:
         raise ValueError("Order must be one of 'S' or 'G'.")
-    
+
     # Shuffle and sort by condition.
     random.shuffle(trial_types)
     trial_types.sort(key=lambda x: x['condition'], reverse=order == 's')
@@ -137,14 +137,14 @@ instructions('intro.txt')
 #%% Main loop
 
 for t in trials:
-    
+
     # Display the first frame of the gesture video.
     video.loadMovie(t['gestures'])
     video.draw()
     video.pause()
     win.flip()
     core.wait(video_start_pause)
-    
+
     # Play the rest of the video.
     video.play()
     while video.status != visual.FINISHED:
@@ -152,30 +152,30 @@ for t in trials:
         win.flip()
         core.wait(0.001)
     core.wait(video_end_pause)
-    
+
     # Show the fragment.
     fragment.color = colors['text']
     fragment.text = t['target']
     fragment.draw()
     win.flip()
     timer.reset()
-    
+
     # Wait for a response.
     response = event.waitKeys(keyList=response_keys + [quit_key],
                               timeStamped=timer)
     key = response[0][0]
     rt = response[0][1]
     correct = key == t['corrAns']
-    
+
     # Store response.
     trials.addData('RT', rt)
     trials.addData('answer', key)
     trials.addData('correct', correct)
-    
+
     # Quit if requested.
     if key == quit_key:
         break
-    
+
     # Feedback.
     if not correct:
         fragment.text = t['target'].replace('_', key)
@@ -188,11 +188,11 @@ for t in trials:
     fragment.draw()
     win.flip()
     core.wait(feedback_duration)
-    
+
     # Pause between trials.
     win.flip()
     core.wait(between_trials_pause)
-    
+
     # Break between blocks.
     next_trial = trials.getFutureTrial(1)
     if next_trial and (t['condition'] != next_trial['condition']):
@@ -214,13 +214,13 @@ trials.saveAsPickle(subject_filename, fileCollisionMethod='overwrite')
 # If the session was completed all the way to the end,
 # save all the data as a spreadsheet and show some summaries.
 if trials.finished:
-    
+
     # Save.
     results_filename = os.path.join('data', subject_id + '.csv')
     results = trials.saveAsWideText(results_filename,
                                     fileCollisionMethod='overwrite',
                                     encoding='utf-8')
-    
+
     # Summarize.
     summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
                                        dropna=False,
@@ -231,7 +231,7 @@ if trials.finished:
         summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean]})
     msg = '\n#### Summary ####\n\n{}\n\n{}\n\n#################\n'
     print(msg.format(summary_accuracy, summary_rt))
-    
+
     # Plot.
     fig = (plotnine.ggplot(plotnine.aes(x='RT', color='correct', fill='correct'), results) +
            plotnine.geom_histogram(alpha=0.5, position=plotnine.position_identity()) +

@@ -21,6 +21,9 @@ Miscellaneous additional files.
 [gestures](gestures)  
 *.mp4* video files with the gestures. Shown on screen during the experiment.
 
+[plots](plots)  
+
+
 [text](text)  
 Text files of onscreen instructions.
 
