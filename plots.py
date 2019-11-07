@@ -8,22 +8,21 @@ import os
 import re
 import webbrowser
 
-from matplotlib import pyplot
 import pandas
 import plotnine
 
 
 #%% Parameters
 
-# Files
+# Data files
 data_dir = 'data'
 filename_pattern = r'\w\d{2}\.csv'
-plot_dir = 'plots'
 
 # Exclusion criteria
 RT_cutoff = 5
 
 # Plots
+plot_dir = 'plots'
 file_format = '.svg'
 img_width = 6
 img_height = 4
