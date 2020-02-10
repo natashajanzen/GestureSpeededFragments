@@ -68,6 +68,13 @@ rt_hist_response = (rt_hist +
 save_plot('RT_histogram_by_response',
           rt_hist_response)
 
-save_plot('RT_histogram_by_response_subjects',
-          rt_hist_response + plotnine.facet_wrap('subject'),
+rt_hist_condition = (rt_hist +
+                     plotnine.aes(fill='condition') +
+                     plotnine.scale_fill_manual(['green', 'red']) +
+                     plotnine.geom_histogram(alpha=0.5, position=plotnine.position_identity()))
+save_plot('RT_histogram_by_condition',
+          rt_hist_condition)
+
+save_plot('RT_histogram_by_condition_subjects',
+          rt_hist_condition + plotnine.facet_wrap('subject'),
           width=9, height=6)
