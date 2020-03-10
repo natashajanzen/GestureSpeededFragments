@@ -1,6 +1,6 @@
 Hello!
 
-You will hear two words followed by a word missing a letter. 
+You will see two words as hand movements followed by a word missing a letter. 
 You decide which missing letter completes the word.
 
 Example:
