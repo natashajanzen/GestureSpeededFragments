@@ -10,6 +10,7 @@ import random
 import statistics
 
 from matplotlib import pyplot
+import numpy
 import pandas
 import plotnine
 from psychopy import visual, core, data, event, tools
@@ -39,6 +40,7 @@ colors = {'background': (0, 0, 0),
 # Timing.
 between_trials_pause = 0.25
 feedback_duration = 1.0
+response_timeout = float('inf')
 video_start_pause = 0.25
 video_end_pause = 0.5
 
@@ -161,11 +163,19 @@ for t in trials:
     timer.reset()
 
     # Wait for a response.
-    response = event.waitKeys(keyList=response_keys + [quit_key],
+    response = event.waitKeys(maxWait=response_timeout,
+                              keyList=response_keys + [quit_key],
                               timeStamped=timer)
-    key = response[0][0]
-    rt = response[0][1]
-    correct = key == t['corrAns']
+    
+    # Validate response.
+    if response is None:
+        key = numpy.nan
+        rt = numpy.nan
+        correct = numpy.nan
+    else:
+        key = response[0][0]
+        rt = response[0][1]
+        correct = key == t['corrAns']
 
     # Store response.
     trials.addData('RT', rt)
@@ -177,7 +187,12 @@ for t in trials:
         break
 
     # Feedback.
-    if not correct:
+    if key is numpy.nan:
+        fragment.color = colors['incorrect']
+        fragment.draw()
+        win.flip()
+        core.wait(feedback_duration)
+    elif not correct:
         fragment.text = t['target'].replace('_', key)
         fragment.color = colors['incorrect']
         fragment.draw()
@@ -221,14 +236,14 @@ if trials.finished:
                                     fileCollisionMethod='overwrite',
                                     encoding='utf-8')
 
-    # Summarize.
+    # Summarize accuracy.
     summary_accuracy = pandas.crosstab(results['condition'], results['correct'],
                                        dropna=False,
                                        normalize='index')
-    try:
-        summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean, statistics.stdev]})
-    except statistics.StatisticsError:
-        summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [statistics.mean]})
+    
+    # Summarize RT.
+    results = results.dropna(subset=['RT', 'correct'])
+    summary_rt = results.groupby(['condition', 'correct']).agg({'RT': [numpy.nanmean, numpy.nanstd]})
     msg = '\n#### Summary ####\n\n{}\n\n{}\n\n#################\n'
     print(msg.format(summary_accuracy, summary_rt))
 
@@ -239,3 +254,6 @@ if trials.finished:
            plotnine.labs(x='RT (s)'))
     fig.draw()
     pyplot.show()
+
+core.quit()
+
