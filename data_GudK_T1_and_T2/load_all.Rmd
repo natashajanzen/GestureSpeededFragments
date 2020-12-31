@@ -12,10 +12,10 @@ library(readr)
 library(tidyr)
 ```
 
-First we get a list of all the CSV files in the current directory.
+First we get a list of all the subject CSV data files in the current directory.
 
 ```{r}
-filenames <- list.files(pattern = "*.csv")
+filenames <- list.files(pattern = "[A-Z0-9]+.csv")
 
 filenames
 ```
