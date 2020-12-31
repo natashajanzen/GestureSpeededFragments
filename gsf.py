@@ -7,7 +7,6 @@ GestureSpeededFragments experiment.
 import glob
 import os
 import random
-import statistics
 
 from matplotlib import pyplot
 import numpy
