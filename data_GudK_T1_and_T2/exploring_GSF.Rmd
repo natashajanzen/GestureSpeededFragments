@@ -1,0 +1,185 @@
+---
+title: "Exploring the GSF data"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+```{r, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(stringr)
+```
+
+```{r}
+d <- read_csv("GudK_T1_and_T2_fixed.csv")
+```
+
+```{r}
+d
+```
+
+## Overview
+
+We want to know about correctness and speed of responses. The main predictor is the `condition` variable. Here are a few plots.
+
+### Proportion correct by condition
+
+```{r, fig.width = 9, fig.height = 6}
+d %>%
+  ggplot(aes(x = condition, fill = correct)) +
+  geom_bar(position = position_dodge()) +
+  facet_wrap(vars(subject)) ->
+  fig_responses
+
+fig_responses
+```
+
+Most subjects did quite well. But **EB12AY**, **ED21AD**, and **HA28TH** got nearly half their answers wrong. It doesn't look as though one condition was consistently more difficult than the other.
+
+### RT distributions by condition
+
+Considering only correct responses.
+
+I always have to google how to show distributions overlaid on each other with ggplot, despite having done it enough times. It's the use of `position_identity()` that trips me up. This prevents the default positioning of bars stacked on top of each other instead of overlaid.
+
+I've applied an arbitrary RT cutoff to stop the horizontal scale from getting too stretched out.
+
+```{r, fig.width = 9, fig.height = 6}
+d %>%
+  filter(correct, RT < 5) %>%
+  ggplot(aes(x = RT, fill = condition)) +
+  geom_histogram(
+    position = position_identity(),
+    alpha = 0.4,
+    binwidth = 0.1
+  ) +
+  facet_wrap(vars(subject)) +
+  labs(x = "RT (s)") ->
+  fig_RT
+
+fig_RT
+```
+
+Most look like classic RT distributions, with an early peak and a long tail. A few subjects seem to be more uniformly taking their time. Most of these are the same ones that got nearly half their answers wrong.
+
+### Mean RT by condition and correctness
+
+The full distributions might be masking subtle on-average differences. So we can look at a plot of means as well.
+
+Varying the vertical axis scale by subject (with `scales = "free_y"`) gives a closer view of each subject's pattern.
+
+Since a plot of means is less cluttered than a full histogram, we can bring back the incorrect responses just in case those are of interest.
+
+```{r, fig.width = 9, fig.height = 6, message = FALSE}
+d %>%
+  ggplot(aes(x = condition, y = RT, color = correct)) +
+  stat_summary(
+    position = position_dodge(width = 0.2),
+    fun.data = mean_sdl,
+    fun.args = c(mult = 1)
+  ) +
+  facet_wrap(vars(subject), scales = "free_y") +
+  labs(y = "mean RT (s)", caption = "mean ±1 SD") ->
+  fig_mean_RT
+
+fig_mean_RT
+```
+
+Subjects tend to be faster with correct responses. Makes sense. There doesn't seem to be a consistent difference between conditions.
+
+## Hand words
+
+Curiously, there isn't actually a variable recording the correct word for each trial. This is my omission, something I forgot in the Python program for the experiment. But we can piece the words together from the gap text variable (e.g. *n_se*) and the correct letter variable (e.g. *o*).
+
+```{r}
+d %>%
+  mutate(full_answer = str_replace(target, "_", corrAns)) ->
+  d
+
+d %>%
+  select(full_answer) %>%
+  distinct()
+```
+
+Now we can mark the hand-related words with a new variable. *Point* and *wave* make sense. *Crawl* feels a bit more dubious, since it involves the legs as well and is arguably not primarily hand-focused. It might be interesting to think about how to identify hand words more systematically.
+
+```{r}
+hand_words <- c(
+  "crawl",
+  "point",
+  "wave"
+)
+
+d %>%
+  mutate(hand_word = full_answer %in% hand_words) ->
+  d
+```
+
+Now we can see the same figure of mean reaction times as above, but with the hand word variable in place of condition.
+
+```{r, fig.width = 9, fig.height = 6}
+fig_mean_RT_hands <- (fig_mean_RT %+% d) + aes(x = hand_word)
+
+fig_mean_RT_hands
+```
+
+No striking pattern. But maybe there aren't enough hand words to go on.
+
+## RT cutoff
+
+The solution you linked on [StackOverflow](https://stackoverflow.com/questions/61601426/remove-outlier-rows-by-column-and-factor-in-r) looks good, and I think you are close to making it work for your case. But this sort of thing can be done much more clearly using the `dplyr` package. Also, using column numbers instead of names is always a bit risky.
+
+The first tricky part of the problem is that we need a separate mean and standard deviation per subject. We can solve this with `group_by()` and then `summarize()`.
+
+```{r}
+d %>%
+  filter(correct) %>%
+  group_by(subject) %>%
+  summarize(.groups = "drop",
+    RT_mean = mean(RT),
+    RT_SD = sd(RT)
+  ) ->
+  subject_summaries
+```
+
+Then use the new variables to calculate a cutoff per subject.
+
+```{r}
+RT_SD_multiplier <- 2.5
+
+subject_summaries %>%
+  mutate(RT_cutoff = RT_mean + RT_SD_multiplier * RT_SD) ->
+  subject_summaries
+
+subject_summaries
+```
+
+Let's check with a plot. We can add the cutoffs to the plot of RT distributions from earlier.
+
+```{r, fig.width = 9, fig.height = 6}
+fig_RT +
+  geom_vline(
+    mapping = aes(xintercept = RT_cutoff),
+    data = subject_summaries,
+    linetype = "dashed"
+  )
+```
+
+Now we can join this information back into the main data frame.
+
+```{r}
+d %>%
+  left_join(subject_summaries) ->
+  d
+```
+
+And use it with `filter()` in subsequent plots or analyses.
+
+```{r}
+d %>%
+  filter(RT < RT_cutoff)
+```
