@@ -1,0 +1,87 @@
+---
+title: "Hand word ratings"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+```{r, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+```
+
+## Data
+
+We have ratings of how manual people think various verbs are, on a scale from 1 to 10.
+
+```{r}
+d <- read_csv("results_handedness_survey.csv")
+```
+
+```{r}
+d
+```
+
+The message from `read_csv()` warns us that the ratings have been read in as text. This is not right. This has occurred because the final row contains text categories. We shouldn't mix data types in the same column. So let's remove the final row.
+
+Ideally, each row should represent the same kind of observation. The second to last row is different from the others because it gives the total rating. So let's remove that one as well.
+
+```{r}
+d %>%
+  filter(row_number() != n()) %>%
+  filter(row_number() != n()) ->
+  d
+
+nrow(d)
+```
+
+Now we can convert all columns to numeric.
+
+```{r}
+d %>%
+  transmute(across(.fns = as.numeric)) ->
+  d
+
+head(d)
+```
+
+Most of R, and especially ggplot, requires a 'long' format that contains one column for each of the variables we want to examine. In this case, we would like columns for **subject**, **word**, and **rating**, so that we can map these things to dimensions of a plot. But currently we have every word as a separate column, and subjects only implicitly as row numbers. So let's switch to the long format.
+
+```{r}
+d %>%
+  mutate(subject = as.character(1:n())) %>%
+  pivot_longer(!subject, names_to = "word", values_to = "rating") ->
+  d
+
+d
+```
+
+## Plots
+
+How did each subject treat the rating scale?
+
+```{r, fig.width = 9, fig.height = 6}
+d %>%
+  ggplot(aes(x = rating)) +
+  scale_x_continuous(breaks = 1:10) +
+  geom_histogram(binwidth = 1, center = 1) ->
+  fig
+
+fig + facet_wrap(vars(subject))
+```
+
+A few subjects make a lot of use of the **1** value. Presumably they thought several words were all completely unhandish. Most have used more or less the full range of the scale.
+
+What ratings did the words get?
+
+```{r}
+fig + facet_wrap(vars(word))
+```
+
+Almost everyone agrees that **point** and **wave** are very handful, and that **bark** isn't. But for a lot of other words there is a surprising spread of opinions.
+
+There are also a few isolated strange ratings. Somebody thought that **smile** is maximally handerous, for example.
