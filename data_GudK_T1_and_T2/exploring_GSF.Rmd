@@ -12,6 +12,7 @@ library(dplyr)
 library(ggplot2)
 library(readr)
 library(stringr)
+library(tidyr)
 ```
 
 ```{r}
@@ -105,29 +106,80 @@ d %>%
   distinct()
 ```
 
-Now we can mark the hand-related words with a new variable. *Point* and *wave* make sense. *Crawl* feels a bit more dubious, since it involves the legs as well and is arguably not primarily hand-focused. It might be interesting to think about how to identify hand words more systematically.
+Now we can mark the hand-related words with a new variable. We have a separate data file that assigns categories to the words according to some scheme somebody came up with.
 
 ```{r}
-hand_words <- c(
-  "crawl",
-  "point",
-  "wave"
-)
-
-d %>%
-  mutate(hand_word = full_answer %in% hand_words) ->
-  d
+handfulness <- read_csv("handAssociation.csv")
 ```
+
+```{r}
+handfulness
+```
+
+We join this to the main data frame.
+
+```{r}
+d %>%
+  left_join(handfulness, by = "full_answer") ->
+  d
+
+head(d)
+```
+
+One thing to watch out for when we use the new variable is that many values are `NA`. This is because the handfulness data file only lists the verbs. The non-verb words have no handfulness value.
 
 Now we can see the same figure of mean reaction times as above, but with the hand word variable in place of condition.
 
 ```{r, fig.width = 9, fig.height = 6}
-fig_mean_RT_hands <- (fig_mean_RT %+% d) + aes(x = hand_word)
+d %>%
+  drop_na(hand_association) ->
+  d_hands
+
+(fig_mean_RT %+% d_hands) +
+  aes(x = hand_association) +
+  labs(x = "word type") ->
+  fig_mean_RT_hands
 
 fig_mean_RT_hands
 ```
 
-No striking pattern. But maybe there aren't enough hand words to go on.
+No striking pattern. But there probably aren't enough of each kind of hand word to go on.
+
+We are also interested in reproducing approximately the figure on page 5 of [this article](https://doi.org/10.1016/j.neuropsychologia.2020.107563). This has box-and-dotplots (or whatever you call those) of mean RT for the three handfulness categories, with the overall mean and standard error for each.
+
+```{r}
+d_hands %>%
+  group_by(subject, full_answer, hand_association) %>%
+  summarize(mean_RT = mean(RT), .groups = "drop") ->
+  d_hands_means
+
+d_hands_means %>%
+  ggplot(aes(x = hand_association, y = mean_RT)) +
+  geom_boxplot(outlier.shape = "") +
+  geom_point(
+    position = position_jitter(width = 0.2, height = 0),
+    shape = "circle filled",
+    fill = "grey"
+  ) +
+  stat_summary(fun.data = mean_se) +
+  labs(x = "word type", y = "mean RT (s)") ->
+  fig_Kogan
+
+fig_Kogan
+```
+
+And also comparing only MAVs (Manual Action Verbs) to the other verbs.
+
+```{r}
+d_hands %>%
+  mutate(MAV = hand_association == "MaV") %>%
+  group_by(subject, full_answer, MAV) %>%
+  summarize(mean_RT = mean(RT), .groups = "drop") ->
+  d_hands_means_MAV
+
+(fig_Kogan %+% d_hands_means_MAV) +
+  aes(x = MAV)
+```
 
 ## RT cutoff
 
