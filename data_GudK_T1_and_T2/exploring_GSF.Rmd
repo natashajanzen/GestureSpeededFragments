@@ -92,6 +92,21 @@ fig_mean_RT
 
 Subjects tend to be faster with correct responses. Makes sense. There doesn't seem to be a consistent difference between conditions.
 
+## Session effects
+
+Do subjects get quicker at the task from one session to the next?
+
+```{r, fig.width = 9, fig.height = 6}
+(fig_mean_RT %+% filter(d, correct)) +
+  aes(x = as.character(session), color = condition) +
+  labs(x = "session") ->
+  fig_session
+
+fig_session
+```
+
+Not consistently.
+
 ## Hand words
 
 Curiously, there isn't actually a variable recording the correct word for each trial. This is my omission, something I forgot in the Python program for the experiment. But we can piece the words together from the gap text variable (e.g. *n_se*) and the correct letter variable (e.g. *o*).
