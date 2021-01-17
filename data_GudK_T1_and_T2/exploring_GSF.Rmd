@@ -52,7 +52,7 @@ I've applied an arbitrary RT cutoff to stop the horizontal scale from getting to
 ```{r, fig.width = 9, fig.height = 6}
 d %>%
   filter(correct, RT < 5) %>%
-  ggplot(aes(x = RT, fill = condition)) +
+  ggplot(aes(x = RT, y = after_stat(density), fill = condition)) +
   geom_histogram(
     position = position_identity(),
     alpha = 0.4,
