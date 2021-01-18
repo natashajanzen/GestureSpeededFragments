@@ -10,6 +10,7 @@ output:
 ```{r, message = FALSE}
 library(dplyr)
 library(ggplot2)
+library(lme4)
 library(readr)
 library(stringr)
 library(tidyr)
@@ -105,7 +106,7 @@ Do subjects get quicker at the task from one session to the next?
 fig_session
 ```
 
-Not consistently.
+In most cases, but not consistently.
 
 ## Hand words
 
@@ -250,3 +251,56 @@ And use it with `filter()` in subsequent plots or analyses.
 d %>%
   filter(RT < RT_cutoff)
 ```
+
+## Model
+
+Now for a linear mixed model. Let's prepare some filtered data first, dropping incorrect answers and very long RTs.
+
+```{r}
+d %>%
+  filter(correct, RT < 5) ->
+  d_model
+```
+
+Before we proceed, let's check how many observations this leaves us with per subject per condition.
+
+```{r}
+d_model %>%
+  ggplot(aes(x = as.character(session), fill = condition)) +
+  geom_bar() +
+  labs(x = "session") +
+  facet_wrap(vars(subject))
+```
+
+
+For the fixed effects, we can ask about the effects of condition and of session. We can also ask about the interaction of the two, which will tell us whether session-to-session changes were different for the two conditions.
+
+Let's estimate only random intercepts for the random effects. There are pros and cons, but this keeps the models simple and computationally feasible.
+
+For a model comparison approach, we will also need models that drop some of the fixed effects.
+
+```{r}
+m0 <- lmer(RT ~ 1 + (1|subject), data = d_model, REML = FALSE)
+m_session <- update(m0, ~ . + session)
+m_condition <- update(m_session, ~ . + condition)
+m_interaction <- update(m_condition, ~ . + condition:session)
+```
+
+```{r}
+anova(
+  m0,
+  m_session,
+  m_condition,
+  m_interaction
+)
+```
+
+The biggest improvement in fit comes from accounting for overall changes in RT across sessions. This makes sense, people usually get a bit faster at a repeated task. There is no evidence that accounting for am overall difference between conditions adds anything, but there is some weak evidence that session effects may differ between the conditions.
+
+We can look at the nature of this interaction effect in a summary of the full model.
+
+```{r}
+summary(m_interaction)
+```
+
+The simple effect of session tells us that RT tends to get faster from session 1 to session 2 in condition G, by about 88 ms on average. The interaction with condition S (`session:conditionS`) tells us that this decrease tends to be about 135 ms steeper in condition S.
