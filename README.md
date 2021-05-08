@@ -34,11 +34,28 @@ Text files of onscreen instructions.
 R script to collect the individual results and save in one dataframe named collectedData.csv.
 
 ---
-# How to run the experiment after downloading on a Mac
+# How To Use
 
-Find gsf.py in finder and open the terminal.
-Write cd (yes, the space after cd is important) and drag the folder **containing** gsf.py into the terminal and enter. 
-In the terminal type: python3 gsf.py (copy and paste will not work).
+To run this application, you'll need [Python3](https://www.python.org/downloads/) and [PsychoPy](https://www.psychopy.org/) installed on your computer.
+
+## Option 1
+You are using a Mac and have downloaded this application by selecting the green download code button.
+
+In finder type:
+```bash
+gsf.py
+```
+From the command line of the terminal type:
+```bash
+cd 
+```
+Note: There is a space after cd and it is important.
+Then drag the folder **containing** gsf.py into the terminal and type: 
+```bash
+python3 gsf.py
+```
+Note: Copy and paste will not work.
+
 To begin PsychoPy will expect a participant ID code and for you to pick one of the two conditions (S or G). 
 
 # About the Author
