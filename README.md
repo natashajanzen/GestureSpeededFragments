@@ -50,7 +50,7 @@ To run this application, you'll need [Python3](https://www.python.org/downloads/
 You use Linux, Windows or a Mac and you know how to download and open applications from GitHub.
 
 ### Option 2
-You are using a Mac, you have downloaded this application by selecting the green download code button and aren't sure what to do next.
+You are using a Mac, you have downloaded this application by selecting the green download code button but you aren't sure what to do next.
 
 Inside Finder locate where the application landed by typing:
 ```bash
