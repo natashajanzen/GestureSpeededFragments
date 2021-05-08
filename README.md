@@ -32,3 +32,15 @@ Text files of onscreen instructions.
 
 [getPsychoPyCollectedData.R](getPsychoPyCollectedData.R)  
 R script to collect the individual results and save in one dataframe named collectedData.csv.
+
+# License
+
+MIT
+
+---
+
+# About the Author
+
+I studied applied linguistics for my master's which introduced me to the inspiring world of open source software, evidence based research, and the beauty of collaboration for solving real world problems. My interests broadened from English language teaching to the development of tools and procedures for investigating when and how gesture based language learning takes place. Through this I discovered an empty niche in the gesture community toolbox: a tool for measuring gesture based language learning, which is robust enough to be used in applied research settings, but also precise enough for behavioral analysis, **and** that is also flexible in its functionality. You can read more about me and my projects here: <a href="https://orcid.org/0000-0002-3696-7999"/a>.
+
+> GitHub [@natashajanzen](https://github.com/natashajanzen)
