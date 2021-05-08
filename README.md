@@ -3,7 +3,7 @@
 <p align="center">
   <a href="#key-components">Key Components</a> •
   <a href="#how-to-use">How To Use</a> •
-  <a href="#emailware">Emailware</a> •
+  <a href="#emailware">Emailware</a>
 </p>
 
 # Key Components
