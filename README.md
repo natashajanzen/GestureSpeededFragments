@@ -41,16 +41,16 @@ To run this application, you'll need [Python3](https://www.python.org/downloads/
 ## Option 1
 You are using a Mac and have downloaded this application by selecting the green download code button.
 
-In finder type:
+In finder locate where the application landed:
 ```bash
-gsf.py
+GestureSpeededFragments-master
 ```
 From the command line of the terminal type:
 ```bash
 cd 
 ```
 Note: There is a space after cd and it is important.
-Then drag the folder **containing** gsf.py into the terminal and type: 
+Then drag the GestureSpeededFragments-master folder **containing** gsf.py into the terminal and type: 
 ```bash
 python3 gsf.py
 ```
