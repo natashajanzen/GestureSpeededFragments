@@ -39,6 +39,9 @@ R script to collect the individual results and save in one dataframe named colle
 To run this application, you'll need [Python3](https://www.python.org/downloads/) and [PsychoPy3](https://www.psychopy.org/) installed on your computer.
 
 ## Option 1
+You use Linux or Windows and know your way around GitHub and know what to do.
+
+## Option 2
 You are using a Mac and have downloaded this application by selecting the green download code button.
 
 Inside Finder locate where the application landed:
