@@ -1,5 +1,13 @@
 # GestureSpeededFragments
 
+<p align="center">
+  <a href="#key-components">Key Components</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#emailware">Emailware</a> •
+</p>
+
+# Key Components
+
 [**gsf.py**](gsf.py)  
 A Python script to run the experiment, using [Psychopy](https://www.psychopy.org/). This is the file to run in order to start the experiment.
 
@@ -39,31 +47,33 @@ R script to collect the individual results and save in one dataframe named colle
 To run this application, you'll need [Python3](https://www.python.org/downloads/) and [PsychoPy3](https://www.psychopy.org/) installed on your computer.
 
 ## Option 1
-You use Linux or Windows and know your way around GitHub and know what to do.
+You use Linux, Windows or a Mac, and you know what to do to download and open applications from GitHub.
 
 ## Option 2
-You are using a Mac and have downloaded this application by selecting the green download code button.
+You are using a Mac, you have downloaded this application by selecting the green download code button and aren't sure what to do next.
 
 Inside Finder locate where the application landed:
 ```bash
-GestureSpeededFragments-master
+gsf.py
 ```
-Open the Terminal from the command line type:
+Open the Terminal from the command line and type:
 ```bash
 cd 
 ```
 Note: There is a space after cd and it is important.
-Drag the GestureSpeededFragments-master folder **containing** gsf.py into the terminal and type: 
+Drag the GestureSpeededFragments-master folder you just found **containing** gsf.py into the terminal and press enter.
+Then type: 
 ```bash
 python3 gsf.py
 ```
+and press enter.
 Note: Copy and paste will not work.
 
 To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then there are two conditions (S or G) as explained [here] (https://github.com/natashajanzen/GestureSpeededFragments/projects). 
 
 # Emailware
 
-The gesture speeded fragment completion task is an [emailware](https://en.wiktionary.org/wiki/emailware). This means  that if you liked using this app or it has helped you in any way, I'd like you send me an email at <hedgewood@gmail.com> about anything you'd want to say about this software. I'd really appreciate it!
+The gesture speeded fragment completion task is an [emailware](https://en.wiktionary.org/wiki/emailware). This means  that if you liked using this app or it has helped you in any way, I'd like you send me an email at <hedgewood@gmail.com> with anything you'd want to say about this software. I'd really appreciate it!
 
 # About the Author
 
