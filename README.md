@@ -33,10 +33,6 @@ Text files of onscreen instructions.
 [getPsychoPyCollectedData.R](getPsychoPyCollectedData.R)  
 R script to collect the individual results and save in one dataframe named collectedData.csv.
 
-# License
-
-MIT
-
 ---
 
 # About the Author
