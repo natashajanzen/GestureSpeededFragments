@@ -69,11 +69,11 @@ python3 gsf.py
 and press enter.
 Note: Copy and paste will not work.
 
-To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then there are two conditions (S or G) as explained [here] (https://github.com/natashajanzen/GestureSpeededFragments/projects). 
+To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then there are two conditions (S or G) as explained [here](https://github.com/natashajanzen/GestureSpeededFragments/projects). 
 
 # Emailware
 
-The gesture speeded fragment completion task is an [emailware](https://en.wiktionary.org/wiki/emailware). This means  that if you liked using this app or it has helped you in any way, I'd like you send me an email at <hedgewood@gmail.com> with anything you'd want to say about this software. I'd really appreciate it!
+The gesture speeded fragment completion task is an [emailware](https://en.wiktionary.org/wiki/emailware). This means  that if you liked using this app or it has helped you in any way, I'd like you to send me an email at <hedgewood@gmail.com> with anything you'd want to say about this software. I'd really appreciate it!
 
 # About the Author
 
