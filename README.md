@@ -41,23 +41,27 @@ To run this application, you'll need [Python3](https://www.python.org/downloads/
 ## Option 1
 You are using a Mac and have downloaded this application by selecting the green download code button.
 
-In finder locate where the application landed:
+Inside Finder locate where the application landed:
 ```bash
 GestureSpeededFragments-master
 ```
-From the command line of the terminal type:
+Open the Terminal from the command line type:
 ```bash
 cd 
 ```
 Note: There is a space after cd and it is important.
-Then drag the GestureSpeededFragments-master folder **containing** gsf.py into the terminal and type: 
+Drag the GestureSpeededFragments-master folder **containing** gsf.py into the terminal and type: 
 ```bash
 python3 gsf.py
 ```
 Note: Copy and paste will not work.
 
-To begin PsychoPy will expect a participant ID code and for you to pick one of the two conditions (S or G). 
+To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then there are two conditions (S or G) as explained [here] (https://github.com/natashajanzen/GestureSpeededFragments/projects). 
+
+# Emailware
+
+The gesture speeded fragment completion task is an [emailware](https://en.wiktionary.org/wiki/emailware). This means  that if you liked using this app or it has helped you in any way, I'd like you send me an email at <hedgewood@gmail.com> about anything you'd want to say about this software. I'd really appreciate it!
 
 # About the Author
 
-I studied applied linguistics which introduced me to the inspiring world of open source software, evidence based research, and the beauty of collaboration for solving real world problems. My interests broadened from language teaching to the development of tools and procedures for investigating when and how gestures support learning. Through this I discovered an empty niche in the gesture community toolbox: a tool for measuring gesture based language learning which is robust enough to be used in applied research settings, but also precise enough for behavioral analysis, **and** that is also flexible in its functionality. You can read more about me and my projects [here](https://orcid.org/0000-0002-3696-7999).
+I studied applied linguistics which introduced me to the inspiring world of open source software, evidence based research, and the beauty of collaboration for solving real world linguistic problems. My interests broadened from language teaching to the development of tools and procedures for investigating when and how gestures support learning. Through this I discovered an empty niche in the gesture community toolbox: a tool for measuring changes in gesture perception which is robust enough to be used in applied research settings, but also precise enough for behavioral analysis, **and** that is also flexible in its functionality. You can read more about me and my projects [here](https://orcid.org/0000-0002-3696-7999).
