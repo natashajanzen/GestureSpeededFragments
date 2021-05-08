@@ -52,7 +52,7 @@ You use Linux, Windows or a Mac, and you know what to do to download and open ap
 ## Option 2
 You are using a Mac, you have downloaded this application by selecting the green download code button and aren't sure what to do next.
 
-Inside Finder locate where the application landed:
+Inside Finder locate where the application landed by typing:
 ```bash
 gsf.py
 ```
