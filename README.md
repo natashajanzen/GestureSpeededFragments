@@ -82,6 +82,7 @@ $ source env/bin/activate
 # Experiment Protocol
 
 To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then you have two conditions (S or G) as explained in the [project description](https://github.com/natashajanzen/GestureSpeededFragments/projects). 
+The time needed for all 32 items in both conditions is usually 10-12 minutes. This is for children learning English as a second language who are age 10-12. Younger children would need more time. Adults may require slightly different instruction, such as asking them to "carefully follow the hand movements".
 
 # Emailware
 
