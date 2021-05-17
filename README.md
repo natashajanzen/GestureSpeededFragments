@@ -46,11 +46,10 @@ R script to collect the individual results and save in one dataframe named colle
 
 To run this application, you'll need [Python3](https://www.python.org/downloads/) and [PsychoPy3](https://www.psychopy.org/) installed on your computer.
 
-### Option 1
-You use Linux, Windows or a Mac and you know how to download and open applications from GitHub.
+Note: the following instructions work for Mac OS and should work on Windows and Linux systems as well.
 
-### Option 2
-You are using a Mac, you have downloaded this application by selecting the green download code button but you aren't sure what to do next.
+## New to GitHub and on a Mac?
+Download this application by selecting the green download `code` button.
 
 Inside Finder locate where the application landed by typing:
 ```bash
@@ -68,6 +67,19 @@ python3 gsf.py
 ```
 and press enter.
 Note: Copy and paste will not work.
+
+## Familiar with GitHub?
+
+Clone this repository and set as working directory. Start up a virtual environment.
+
+```
+$ python3 -m venv env
+$ source env/bin/activate
+(env)$ pip install -r requirements
+(env)$ python3 gsf.py
+```
+
+# Experiment Protocol
 
 To begin PsychoPy will expect you to enter a participant ID code and for you to pick one of the two gesture conditions. If you have not modified the task then you have two conditions (S or G) as explained in the [project description](https://github.com/natashajanzen/GestureSpeededFragments/projects). 
 
