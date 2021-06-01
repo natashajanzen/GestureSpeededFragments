@@ -75,7 +75,11 @@ Clone this repository and set as working directory. Start up a virtual environme
 ```
 $ python3 -m venv env
 $ source env/bin/activate
-(env)$ pip install -r requirements
+(env)$ pip install six
+(env)$ pip install appdirs
+(env)$ pip install packaging
+(env)$ pip install ordered_set
+(env)$ pip install -r requirements.txt
 (env)$ python3 gsf.py
 ```
 
