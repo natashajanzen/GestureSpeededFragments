@@ -71,7 +71,7 @@ Note: Copy and paste will not work.
 ## Familiar with GitHub?
 
 Clone this repository and set as working directory. Start up a virtual environment.
-
+(This set of commands worked for openSuse 15.1.)
 ```
 $ python3 -m venv env
 $ source env/bin/activate
