@@ -88,7 +88,7 @@ sudo dnf install python3-devel  # for python3.x installs
 ```
 For zypper (openSUSE...)
 ```bash
-sudo zypper in python3-devel  # for python3.x installs
+sudo zypper install python3-devel  # for python3.x installs
 ```
 For apk (Alpine...)
 ```bash
