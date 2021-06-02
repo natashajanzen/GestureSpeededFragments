@@ -70,9 +70,36 @@ Note: Copy and paste will not work.
 
 ## Familiar with GitHub?
 
-Clone this repository and set as working directory. Start up a virtual environment.
-(This set of commands worked for openSuse 15.1.)
+Clone this repository and set as working directory. 
+You need to install the python3 development libraries first.
+(This set of commands was tested with openSuse 15.1.)
+
+For apt (Ubuntu, Debian...)
+```bash
+sudo apt-get install python3-dev  # for python3.x installs
 ```
+For yum (CentOS, RHEL...)
+```bash
+sudo yum install python3-devel   # for python3.x installs
+```
+For dnf (Fedora...)
+```bash
+sudo dnf install python3-devel  # for python3.x installs
+```
+For zypper (openSUSE...)
+```bash
+sudo zypper in python3-devel  # for python3.x installs
+```
+For apk (Alpine...)
+```bash
+sudo apk add python3-dev  # for python3.x installs
+```
+For apt-cyg (Cygwin...)
+```bash
+apt-cyg install python3-devel  # for python3.x installs
+```
+Start up a virtual environment and install the python3 dependencies with pip. (Tested with openSuse 15.1.)
+```bash
 $ python3 -m venv env
 $ source env/bin/activate
 (env)$ pip install six
