@@ -74,7 +74,7 @@ Clone this repository and set as working directory.
 You need to install the python3 development libraries first.
 (This set of commands was tested with openSuse 15.1.)
 
-For apt (Ubuntu, Debian...)
+For apt (Ubuntu, Debian...) type:
 ```bash
 sudo apt-get install python3-dev  # for python3.x installs
 ```
