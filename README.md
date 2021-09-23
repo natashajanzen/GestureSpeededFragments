@@ -4,7 +4,8 @@
 
 A demonstration video of the GSF task in the [syntactically specific condition](https://user-images.githubusercontent.com/21278710/134540331-cf0493cc-e029-4d9b-aece-b8901b9d358d.mp4) showing the items *the babies smile* and *the boy's blanket*.
 
-A demonstration video of the GSF task in the [syntactically general condition](https://user-images.githubusercontent.com/21278710/134540361-df664a6c-13ca-4364-9b27-5116ba2e0d86.mp4) showing *the dogs play* and *the boy's jump*.
+A demonstration video of the GSF task in the [syntactically general condition](https://user-images.githubusercontent.com/21278710/134546545-3857911c-077b-4282-a716-3ade256d3267.mp4) showing *the dogs play* and *the boy's jump*.
+
 
 <p align="center">
   <a href="#key-components">Key Components</a> •
