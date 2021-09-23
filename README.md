@@ -1,5 +1,12 @@
 # GestureSpeededFragments
 
+
+https://user-images.githubusercontent.com/21278710/134540331-cf0493cc-e029-4d9b-aece-b8901b9d358d.mp4
+A demonstration video showing *the babies smile* and *the boy's blanket* in the syntactically specific condition.
+
+https://user-images.githubusercontent.com/21278710/134540361-df664a6c-13ca-4364-9b27-5116ba2e0d86.mp4
+A demonstration video showing *the dogs play* and *the boy's jump* in the syntactically general condition.
+
 <p align="center">
   <a href="#key-components">Key Components</a> •
   <a href="#how-to-use">How To Use</a> •
