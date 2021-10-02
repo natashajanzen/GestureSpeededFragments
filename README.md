@@ -34,7 +34,7 @@ List of Python package versions used when developing the experiment. As produced
 Data collected in the experiment is saved here. *.psydat* files store Psychopy TrialHandler objects. These are saved even if the subject does not complete the experiment. *.csv* files store results from completed runs of the experiment.
 
 [extras](extras)  
-Miscellaneous additional files.
+Miscellaneous additional files including list of experimental items.
 
 [gestures](gestures)  
 *.mp4* video files with the gestures. Shown on screen during the experiment.
