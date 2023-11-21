@@ -1,6 +1,6 @@
 # GestureSpeededFragments
 
-
+A link to the [paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0280543) published in PLoS One on research involving this task.
 
 A demonstration video of the GSF task in the [syntactically specific condition](https://user-images.githubusercontent.com/21278710/134540331-cf0493cc-e029-4d9b-aece-b8901b9d358d.mp4) showing the items *the babies smile* and *the boy's blanket*.
 
